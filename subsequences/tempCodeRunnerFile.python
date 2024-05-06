@@ -1,0 +1,53 @@
+# Python3 program for KMP Algorithm
+
+
+def KMPSearch(pat2, txt1):
+	M = len(pat2)
+	N = len(txt1)
+	lps = [0]*M
+	j = 0
+	i=0
+	computeLPSArray(pat2, M, lps)
+	while (N - i) >= (M - j):
+		if pat2[j] == txt1[i]:
+			i += 1
+			j += 1
+		if j == M:
+			print("Found pattern at index " + str(i-j))
+			j = lps[j-1]
+		elif i < N and pat2[j] != txt1[i]:
+			# Do not match lps[0..lps[j-1]] characters,
+			# they will match anyway
+			if j != 0:
+				j = lps[j-1]
+			else:
+				i += 1
+# Function to compute LPS array
+def computeLPSArray(pat2, M, lps):
+	len = 0 # length of the previous longest prefix suffix
+
+	lps[0] = 0 # lps[0] is always 0
+	i = 1
+
+	# the loop calculates lps[i] for i = 1 to M-1
+	while i < M:
+		if pat2[i] == pat2[len]:
+			len += 1
+			lps[i] = len
+			i += 1
+		else:
+			# This is tricky. Consider the example.
+			# AAACAAAA and i = 7. The idea is similar
+			# to search step.
+			if len != 0:
+				len = lps[len-1]
+
+				# Also, note that we do not increment i here
+			else:
+				lps[i] = 0
+				i += 1
+# Driver code
+if __name__ == '__main__':
+	s1 = "aabaabaabaababababa"
+	s2 = "aaba"
+	KMPSearch(s2, s1)
