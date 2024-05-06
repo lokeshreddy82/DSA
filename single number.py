@@ -1,5 +1,5 @@
 def solution(nums):
-    nums.sort()
+    nums.sort()#xor works hear
     for i in range(len(nums)):
         if nums[i]==nums[i+1]:
             continue
